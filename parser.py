@@ -1,5 +1,5 @@
 import re
-import string
+from string import hexdigits
 
 __all__ = ['loads', 'load', 'parse']
 
@@ -80,13 +80,14 @@ class Parser(object):
                     char = self.ch
                 elif self.accept('u'):
                     # parse something like \u1234
-                    hex_digits = []
+                    hex_digits = ''
                     for _ in xrange(4):
                         self.advance()
                         if self.ch not in hexdigits:
                             self.error() 
                         hex_digits += self.ch
-                    char = unichr(int(hex_digits))
+                    self.advance()
+                    char = unichr(int(hex_digits, 16))
                 else:
                     self.error()
             else:
