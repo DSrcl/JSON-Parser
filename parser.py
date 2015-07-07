@@ -157,13 +157,6 @@ class Parser(object):
         self.advance()
         return arr 
 
-    def parse(self):
-        ret = self.parse_value()
-        self.white()
-        if not self.EOS:
-            self.error()
-        return ret 
-
     def parse_null(self):
         self.expect('n')
         self.expect('u')
@@ -185,6 +178,15 @@ class Parser(object):
         self.expect('u')
         self.expect('e')
         return True
+
+    def parse(self):
+        self.white()
+        ret = self.parse_value()
+        self.white()
+        if not self.EOS:
+            self.error()
+        return ret 
+
 
 def parse(text):
     return Parser(text).parse() 
